@@ -11,6 +11,7 @@
 .stylelintrc*
 *.map
 *.zip
+webpack-stats.json
 .DS_Store
 Thumbs.db
 
