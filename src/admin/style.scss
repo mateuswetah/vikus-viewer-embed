@@ -1,0 +1,702 @@
+/**
+ * Layout chrome aligned with core DataViews / Boot admin surfaces.
+ * Uses core design tokens where available — no plugin brand palette.
+ *
+ * Shell resets + viewport fill mirror WP Boot pages (Connectors, Font Library):
+ * page-wp-admin.php critical styles + `.boot-layout-container .boot-layout`.
+ */
+
+/* Full-bleed canvas over classic gray #wpcontent. */
+body.vikus-viewer-embed-admin-page {
+	background: #fff;
+}
+
+body.vikus-viewer-embed-admin-page #wpwrap {
+	overflow-y: auto;
+}
+
+@media (min-width: 782px) {
+	body.vikus-viewer-embed-admin-page #wpwrap {
+		overflow-y: initial;
+	}
+}
+
+body.vikus-viewer-embed-admin-page #wpcontent {
+	padding-inline-start: 0;
+}
+
+body.vikus-viewer-embed-admin-page #wpbody-content {
+	padding-bottom: 0;
+}
+
+body.vikus-viewer-embed-admin-page #wpfooter {
+	display: none;
+}
+
+body.vikus-viewer-embed-admin-page #wpbody-content > .notice,
+body.vikus-viewer-embed-admin-page #wpbody-content > .updated,
+body.vikus-viewer-embed-admin-page #wpbody-content > .error {
+	margin: 16px 24px 0;
+}
+
+/*
+ * App root ≈ Boot `.boot-layout` (single-page): gray shell that fills
+ * #wpbody below the admin bar. The white rounded stage is `.vikus-admin-ui-page`
+ * (≈ `.boot-layout__stage`).
+ */
+.vikus-admin-app {
+	--wp-dataviews-color-background: var(--wpds-color-background-surface-neutral-strong, #fff);
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	isolation: isolate;
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	background: var(--wpds-color-background-surface-neutral-weak, #f0f0f0);
+	color: var(--wpds-color-foreground-content-neutral, #1e1e1e);
+}
+
+@media (min-width: 600px) {
+	.vikus-admin-app {
+		position: absolute;
+		inset: 0;
+		min-height: calc(100vh - 46px);
+	}
+}
+
+@media (min-width: 782px) {
+	.vikus-admin-app {
+		/* `.boot-layout--single-page .boot-layout__surfaces` margin */
+		min-height: calc(100vh - 32px);
+		padding: 0 8px 8px 0;
+	}
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * Temporary stand-in for `@wordpress/admin-ui` Page styles
+ * Source: packages/admin-ui/src/page/style.module.css (Gutenberg trunk)
+ *
+ * Also mirrors Boot `.boot-layout__stage` (white surface + desktop radius).
+ *
+ * Class map (ours → CSS module export):
+ *   .vikus-admin-ui-page                          → .page
+ *   .vikus-admin-ui-page__header                  → .header
+ *   .vikus-admin-ui-page__header-content          → .header-content
+ *   .vikus-admin-ui-page__header-start            → (header start Stack)
+ *   .vikus-admin-ui-page__header-actions          → .header-actions
+ *   .vikus-admin-ui-page__header-title            → .header-title
+ *   .vikus-admin-ui-page__header-visual           → .header-visual
+ *   .vikus-admin-ui-page__header-subtitle         → .header-subtitle
+ *   .vikus-admin-ui-page__content                 → .content
+ *   .vikus-admin-ui-page__content--has-padding    → .content.has-padding
+ *   .vikus-admin-ui-breadcrumbs*                  → admin-ui Breadcrumbs
+ *
+ * Remove this block when AdminPage.js re-exports the real Page component.
+ * ---------------------------------------------------------------------------
+ */
+.vikus-admin-ui-page {
+	display: flex;
+	flex: 1 1 auto;
+	flex-flow: column;
+	min-height: 0;
+	height: 100%;
+	overflow: hidden;
+	border-radius: 0;
+	background-color: var(--wpds-color-background-surface-neutral-strong, #fff);
+	color: var(--wpds-color-foreground-content-neutral, #1e1e1e);
+	position: relative;
+	z-index: 1;
+	text-wrap: pretty;
+}
+
+@media (min-width: 782px) {
+	.vikus-admin-ui-page {
+		/* `.boot-layout__stage` desktop */
+		border-radius: var(--wpds-border-radius-lg, 8px);
+	}
+}
+
+.vikus-admin-ui-page__header {
+	padding: var(--wpds-dimension-padding-lg, 16px)
+		var(--wpds-dimension-padding-2xl, 24px);
+	border-block-end: var(--wpds-border-width-xs, 1px) solid
+		var(--wpds-color-stroke-surface-neutral-weak, #ddd);
+	background: var(--wpds-color-background-surface-neutral-strong, #fff);
+	position: sticky;
+	/* Stage sits below the admin bar; stick to the top of the page scrollport. */
+	inset-block-start: 0;
+	z-index: 2;
+}
+
+.vikus-admin-ui-page__header-content {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--wpds-dimension-gap-sm, 8px);
+	min-height: var(--wpds-dimension-size-md, 40px);
+}
+
+.vikus-admin-ui-page__header-start {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	gap: var(--wpds-dimension-gap-sm, 8px);
+	min-width: 0;
+	flex: 1 1 auto;
+}
+
+.vikus-admin-ui-page__header-actions {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: var(--wpds-dimension-gap-sm, 8px);
+	flex-shrink: 0;
+}
+
+.vikus-admin-ui-page__header-title {
+	margin: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: 15px;
+	line-height: 20px;
+	font-weight: 600;
+}
+
+.vikus-admin-ui-page__header-visual {
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 1fr;
+	flex-shrink: 0;
+	width: var(--wpds-dimension-size-sm, 20px);
+	height: var(--wpds-dimension-size-sm, 20px);
+}
+
+.vikus-admin-ui-page__header-visual > * {
+	grid-column: 1 / -1;
+	grid-row: 1 / -1;
+	max-width: 100%;
+	max-height: 100%;
+}
+
+.vikus-admin-ui-page__header-subtitle {
+	margin: 0;
+	padding-block-end: var(--wpds-dimension-padding-xs, 4px);
+	color: var(--wpds-color-foreground-content-neutral-weak, #757575);
+	font-size: 13px;
+	line-height: 1.4;
+}
+
+/* Mirrors packages/admin-ui/src/breadcrumbs/style.module.css */
+.vikus-admin-ui-breadcrumbs__list {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex-wrap: wrap;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	min-width: 0;
+	gap: 0;
+}
+
+.vikus-admin-ui-breadcrumbs__list > li {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex-shrink: 0;
+	min-width: 0;
+}
+
+.vikus-admin-ui-breadcrumbs__list > li:last-child {
+	flex-shrink: 1;
+}
+
+.vikus-admin-ui-breadcrumbs__separator {
+	color: var(
+		--wpds-color-stroke-surface-neutral,
+		var(--wpds-color-stroke-surface-neutral-weak, #ddd)
+	);
+	margin: 0 var(--wpds-dimension-gap-sm, 8px);
+	user-select: none;
+}
+
+.vikus-admin-ui-breadcrumbs__current {
+	margin: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: 15px;
+	line-height: 20px;
+	font-weight: 600;
+}
+
+.vikus-admin-ui-breadcrumbs .components-button.is-link {
+	font-size: 15px;
+	line-height: 20px;
+	text-decoration: none;
+}
+
+.vikus-admin-ui-breadcrumbs .components-button.is-link:hover,
+.vikus-admin-ui-breadcrumbs .components-button.is-link:focus {
+	text-decoration: underline;
+}
+
+.vikus-admin-ui-page__content {
+	flex: 1 1 auto;
+	min-height: 0;
+	overflow: auto;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+}
+
+.vikus-admin-ui-page__content--has-padding {
+	padding: var(--wpds-dimension-padding-lg, 16px)
+		var(--wpds-dimension-padding-2xl, 24px);
+}
+
+/* List: DataViews fills the page and scrolls inside its own wrapper. */
+.vikus-admin-ui-page.vikus-admin-app__list > .vikus-admin-ui-page__content {
+	overflow: hidden;
+	padding: 0;
+}
+
+.vikus-admin-app__list-body {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	min-height: 0;
+	width: 100%;
+}
+
+.vikus-admin-app__list-body > .components-v-stack {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	min-height: 0;
+	width: 100%;
+}
+
+.vikus-admin-app__list .dataviews-wrapper {
+	flex: 1 1 auto;
+	min-height: 0;
+	height: auto;
+}
+
+.vikus-admin-app__layout {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 300px;
+	gap: 0;
+	align-items: start;
+	width: 100%;
+	max-width: 1280px;
+	margin-inline: auto;
+}
+
+@media (max-width: 960px) {
+	.vikus-admin-app__layout {
+		grid-template-columns: 1fr;
+	}
+
+	.vikus-admin-app__status {
+		border-left: none;
+		border-top: 1px solid
+			var(--wpds-color-stroke-surface-neutral-weak, #ddd);
+		margin-top: 24px;
+		padding: 24px 0 0;
+	}
+}
+
+.vikus-admin-app__status {
+	position: sticky;
+	/*
+	 * Sticky within the page content scrollport (header is outside it),
+	 * so top is 0 — not admin-bar + header height.
+	 */
+	top: 0;
+	align-self: start;
+	box-sizing: border-box;
+	margin-left: 24px;
+	padding-left: 24px;
+	border-left: 1px solid
+		var(--wpds-color-stroke-surface-neutral-weak, #ddd);
+}
+
+.vikus-admin-app__build-status-value {
+	margin: 0;
+	font-size: 13px;
+	line-height: 1.5;
+}
+
+.vikus-admin-app__build-status-progress {
+	font-size: 12px;
+	line-height: 1.4;
+	color: var(--wpds-color-foreground-content-neutral-weak, #757575);
+}
+
+.vikus-admin-app__build-status-row {
+	width: auto;
+	flex: 0 0 auto;
+}
+
+.vikus-admin-app__build-status-message,
+.vikus-admin-app__build-status-error {
+	margin: 0;
+	font-size: 12px;
+	line-height: 1.4;
+	color: var(--wpds-color-foreground-content-neutral-weak, #757575);
+}
+
+.vikus-admin-app__build-status-error {
+	color: var(--wpds-color-foreground-content-error-weak, #cc1818);
+}
+
+.vikus-admin-app__shortcode {
+	display: block;
+	padding: 8px 10px;
+	font-size: 12px;
+	line-height: 1.4;
+	word-break: break-all;
+	background: var(--wpds-color-background-surface-neutral-weak, #f0f0f0);
+	border-radius: 2px;
+}
+
+.vikus-admin-app__panel-title {
+	margin: 0;
+	font-size: 15px;
+	line-height: 20px;
+	font-weight: 500;
+}
+
+.vikus-admin-app__publish {
+	padding-top: 16px;
+	border-top: 1px solid
+		var(--wpds-color-stroke-surface-neutral-weak, #ddd);
+}
+
+.vikus-admin-app__publish-intro {
+	margin: 8px 0 0;
+	font-size: 12px;
+	line-height: 1.45;
+	color: var(--wpds-color-foreground-content-neutral-weak, #757575);
+}
+
+.vikus-admin-app__publish-list {
+	margin: 12px 0 0;
+	padding: 0;
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.vikus-admin-app__publish-list li {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 4px;
+	font-size: 12px;
+	line-height: 1.45;
+}
+
+.vikus-admin-app__publish-list strong {
+	font-size: 11px;
+	font-weight: 500;
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+	color: var(--wpds-color-foreground-content-neutral-weak, #757575);
+}
+
+.vikus-admin-app__publish-label {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.vikus-admin-app__publish-label svg {
+	flex-shrink: 0;
+	color: currentColor;
+}
+
+.vikus-admin-app__publish-list .vikus-admin-app__shortcode {
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.vikus-admin-app__name-row {
+	width: 100%;
+	max-width: 48rem;
+}
+
+.vikus-admin-app__collection-name {
+	flex: 1 1 16rem;
+	min-width: 14rem;
+	max-width: 40rem;
+}
+
+.vikus-admin-app__required {
+	font-weight: 400;
+}
+
+.vikus-admin-app__source-meta {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	flex: 0 1 12rem;
+	min-width: 10rem;
+	padding-top: 0;
+}
+
+.vikus-admin-app__source-meta-value {
+	margin: 0;
+	min-height: 40px;
+	display: inline-flex;
+	align-items: center;
+	flex-wrap: nowrap;
+	gap: 6px;
+	font-size: 13px;
+	line-height: 1.4;
+}
+
+.vikus-admin-app__source-meta-value code {
+	font-size: 12px;
+	white-space: nowrap;
+}
+
+.vikus-admin-app__tabs .components-tab-panel__tabs {
+	margin-bottom: 16px;
+	border-bottom: 1px solid
+		var(--wpds-color-stroke-surface-neutral-weak, #ddd);
+}
+
+.vikus-admin-app__tabs .components-tab-panel__tabs-item {
+	border-radius: 0;
+	border-bottom: 2px solid transparent;
+	margin-bottom: -1px;
+}
+
+.vikus-admin-app__tabs
+	.components-tab-panel__tabs-item.is-active {
+	box-shadow: none;
+	border-bottom-color: var(
+		--wp-components-color-accent,
+		var(--wp-admin-theme-color, #3858e9)
+	);
+}
+
+.vikus-admin-app__tab {
+	padding-top: 4px;
+}
+
+.vikus-admin-app__card {
+	max-width: 100%;
+}
+
+.vikus-admin-app__card-header {
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 16px;
+}
+
+.vikus-admin-app__card-header-text {
+	flex: 1 1 auto;
+	min-width: 0;
+	/* Keep title clear of the watermark on narrow cards. */
+	padding-inline-end: 0;
+}
+
+.vikus-admin-app__card--illustrated .vikus-admin-app__card-header-text {
+	padding-inline-end: 9rem;
+}
+
+/* Match @wordpress/ui Card.Title → Text variant heading-lg */
+.vikus-admin-app__card-title {
+	margin: 0;
+	font-size: 15px;
+	line-height: 20px;
+	font-weight: 500;
+}
+
+.vikus-admin-app__card-description {
+	margin: 0;
+	color: var(--wpds-color-foreground-content-neutral-weak, #757575);
+	font-size: 13px;
+	font-weight: 400;
+	line-height: 1.4;
+}
+
+.vikus-admin-app__card-illustration {
+	position: absolute;
+	inset-block-start: 12px;
+	inset-inline-end: 16px;
+	width: 150px;
+	height: auto;
+	max-height: 62px;
+	object-fit: contain;
+	object-position: top right;
+	opacity: 0.3;
+	pointer-events: none;
+	user-select: none;
+}
+
+@media (max-width: 782px) {
+	.vikus-admin-app__card-illustration {
+		display: none;
+	}
+
+	.vikus-admin-app__card--illustrated .vikus-admin-app__card-header-text {
+		padding-inline-end: 0;
+	}
+}
+
+.vikus-admin-app__group-section {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.vikus-admin-app__group-section-title {
+	margin: 0;
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.4;
+}
+
+.vikus-admin-app__group-section-help {
+	margin: 0;
+	color: #757575;
+	font-size: 12px;
+	line-height: 1.5;
+}
+
+.vikus-admin-app__rows {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.vikus-admin-app__row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	align-items: flex-start;
+}
+
+.vikus-admin-app__row > * {
+	flex: 1 1 160px;
+	min-width: 0;
+}
+
+.vikus-admin-app__row-action {
+	display: flex;
+	flex-direction: column;
+	flex: 0 0 auto;
+	min-width: 0;
+}
+
+/* Match .components-base-control__label so the button lines up with inputs. */
+.vikus-admin-app__row-action-label {
+	display: block;
+	box-sizing: border-box;
+	margin-bottom: 8px;
+	font-size: 11px;
+	font-weight: 500;
+	line-height: 1.4;
+	height: 1.4em;
+	visibility: hidden;
+	pointer-events: none;
+	user-select: none;
+}
+
+.vikus-admin-app__row-action .components-button {
+	height: 40px;
+}
+
+.vikus-admin-app__add-button {
+	align-self: flex-start;
+	width: auto;
+}
+
+.vikus-admin-app__source-combobox {
+	min-width: 12rem;
+}
+
+.vikus-admin-app__source-combobox-field {
+	width: 100%;
+}
+
+.vikus-admin-app__source-combobox-trigger-row {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	width: 100%;
+}
+
+.vikus-admin-app__source-combobox-trigger-row > :first-child {
+	flex: 1 1 auto;
+	min-width: 0;
+	width: 100%;
+}
+
+.vikus-admin-app__source-combobox-search {
+	padding: var(--wpds-dimension-padding-sm, 8px)
+		var(--wpds-dimension-padding-sm, 8px)
+		var(--wpds-dimension-padding-xs, 4px);
+}
+
+.vikus-admin-app__source-combobox-search input {
+	width: 100%;
+}
+
+.vikus-admin-app__style-groups {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+	gap: 16px 12px;
+}
+
+.vikus-admin-app__style-group-title {
+	margin: 0 0 8px;
+	font-size: 12px;
+	font-weight: 600;
+}
+
+.vikus-admin-app__style-grid {
+	display: grid;
+	gap: 4px;
+}
+
+.vikus-admin-app__style-indicator-button {
+	width: 100%;
+	height: auto;
+	min-height: 36px;
+	padding: 4px 8px 4px 4px;
+	justify-content: flex-start;
+	gap: 8px;
+	text-align: left;
+	white-space: normal;
+}
+
+.vikus-admin-app__style-palette {
+	min-width: 16rem;
+	padding: 8px;
+}
+
+.vikus-admin-app__style-type-row > * {
+	flex: 1 1 12rem;
+	min-width: 12rem;
+}
+
+/* DataForm selects inside cards need a usable minimum width. */
+.vikus-admin-app__card .dataviews-controls__input,
+.vikus-admin-app__card .components-select-control,
+.vikus-admin-app__card .components-base-control {
+	min-width: 12rem;
+}

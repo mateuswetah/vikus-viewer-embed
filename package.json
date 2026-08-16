@@ -1,0 +1,52 @@
+{
+  "name": "vikus-viewer-embed",
+  "version": "0.3.0",
+  "description": "WordPress plugin to embed Vikus Viewer visualizations",
+  "private": true,
+  "homepage": "https://github.com/mateuswetah/vikus-viewer-embed",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mateuswetah/vikus-viewer-embed.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mateuswetah/vikus-viewer-embed/issues"
+  },
+  "files": [
+    "vikus-viewer-embed.php",
+    "uninstall.php",
+    "readme.txt",
+    "LICENSE",
+    "index.php",
+    "build",
+    "includes",
+    "languages",
+    "assets",
+    "vendor-vikus",
+    "!vendor-vikus/.gitignore",
+    "!vendor-vikus/.htaccess",
+    "!vendor-vikus/.nojekyll",
+    "!vendor-vikus/js/lodash.min.js",
+    "!vendor-vikus/js/lodash.js",
+    "!vendor-vikus/js/pixi-legacy.js",
+    "!vendor-vikus/js/pixi-legacy.mjs",
+    "!vendor-vikus/js/pixi.8.min.js",
+    "!vendor-vikus/js/pixi.8.min.mjs",
+    "!vendor-vikus/js/d3.v3.js"
+  ],
+  "scripts": {
+    "build": "wp-scripts build && node ./bin/copy-block-assets.js",
+    "start": "wp-scripts start",
+    "lint:js": "wp-scripts lint-js ./src",
+    "packages-update": "wp-scripts packages-update",
+    "plugin-zip": "wp-scripts plugin-zip"
+  },
+  "dependencies": {
+    "@wordpress/dataviews": "^17.3.0",
+    "@wordpress/icons": "^15.3.0",
+    "@wordpress/theme": "^0.17.0",
+    "@wordpress/ui": "^0.19.0"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^30.0.0"
+  }
+}

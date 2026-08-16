@@ -1,0 +1,28 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "vikus-viewer-embed/viewer",
+	"version": "0.1.0",
+	"title": "Vikus Viewer Embed",
+	"category": "embed",
+	"icon": "images-alt2",
+	"description": "Embed a Vikus visualization built from WordPress content.",
+	"keywords": [ "vikus", "visualization", "collection", "gallery", "embed" ],
+	"textdomain": "vikus-viewer-embed",
+	"attributes": {
+		"collectionId": {
+			"type": "number",
+			"default": 0
+		},
+		"height": {
+			"type": "string",
+			"default": "80vh"
+		}
+	},
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ]
+	},
+	"editorScript": "file:./index.js",
+	"render": "file:./render.php"
+}

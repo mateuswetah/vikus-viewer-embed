@@ -1,0 +1,19 @@
+{
+  "name": "vikus/vikus-viewer-embed",
+  "description": "WordPress plugin to embed Vikus Viewer visualizations",
+  "type": "wordpress-plugin",
+  "license": "GPL-3.0-or-later",
+  "homepage": "https://github.com/mateuswetah/vikus-viewer-embed",
+  "support": {
+    "issues": "https://github.com/mateuswetah/vikus-viewer-embed/issues",
+    "source": "https://github.com/mateuswetah/vikus-viewer-embed"
+  },
+  "require": {
+    "php": ">=8.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "VikusViewer\\": "includes/"
+    }
+  }
+}
